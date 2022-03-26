@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/MasseyHacks/masseyhacks-viii-bot#readme",
   "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.8",
     "typescript": "^4.6.3"
   },
   "dependencies": {
