@@ -109,3 +109,5 @@ dist
 
 # Compiled TS
 *.js
+
+*.csv

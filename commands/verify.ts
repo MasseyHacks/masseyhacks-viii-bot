@@ -1,6 +1,6 @@
 require('dotenv').config();
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Client, CommandInteraction, GuildMember, User } from "discord.js";
+import { CommandInteraction } from "discord.js";
 import jwt from 'jsonwebtoken';
 import { discordUsers } from '../models/schema';
 import TokenInterface from '../interfaces/tokenInterface';
