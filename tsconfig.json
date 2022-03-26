@@ -3,7 +3,6 @@
         "module" : "commonjs",
         "target": "ESNext",
         "watch" : false,
-        "esModuleInterop": true,
-    },
-    "exclude": ["interfaces/"]
+        "esModuleInterop": true
+    }
 }
