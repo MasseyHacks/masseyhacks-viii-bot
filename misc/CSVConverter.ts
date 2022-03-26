@@ -22,7 +22,7 @@ const createNewCSV = async (fileName: fs.PathLike) => {
 };
 
 const outputToCSV = (data: string) => {
-    fs.writeFile("entryWithJWT.csv", data, (err) => {
+    fs.writeFile("misc/entryWithJWT.csv", data, (err) => {
         if (err)
             console.log(err);
         else {
@@ -44,4 +44,5 @@ const generateJWT = (firstName: String, lastName: String, email: String) => {
     );
 };
 
+createNewCSV("misc/entry.csv");
 
