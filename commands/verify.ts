@@ -3,12 +3,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, CommandInteraction, GuildMember, User } from "discord.js";
 import jwt from 'jsonwebtoken';
 import { discordUsers } from '../models/schema';
-
-interface TokenInterface{
-    firstName : string,
-    lastName : string,
-    email: string
-}
+import TokenInterface from '../interfaces/tokenInterface';
 
 module.exports ={
     data: new SlashCommandBuilder()
