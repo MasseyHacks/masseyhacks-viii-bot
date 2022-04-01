@@ -19,14 +19,27 @@ module.exports ={
             return;
         }
         const isVerified = member.roles.cache.has(process.env.VERIFIED_ROLE_ID);
-        if(isVerified){
-            await interaction.editReply({content: "You're already verified! No need to verify yourself again."});
-            return;
-        }
         try{
             const decoded = jwt.verify(interaction.options.getString('token'),process.env.JWT_SECRET) as TokenInterface;
+            const masseyhacks = decoded.category == "masseyhacks";
+            const jumpstart = decoded.category == "jumpstart";
+            if(isVerified){
+                if(!member.roles.cache.has(process.env.MASSEYHACKS_PARTICIPANT) && masseyhacks){
+                    await interaction.editReply({content: "Thanks for verifying yourself, we've now added the MasseyHacks role to you!"});
+                    await member.roles.add(process.env.MASSEYHACKS_PARTICIPANT);
+                    await discordUsers.findOneAndUpdate({discordId: member.id}, {masseyhacks: true});
+                }
+                else if(!member.roles.cache.has(process.env.JUMPSTART) && jumpstart){
+                    await interaction.editReply({content: "Thanks for verifying yourself, we've now added the MasseyHacks role to you!"});
+                    await member.roles.add(process.env.JUMPSTART);
+                    await discordUsers.findOneAndUpdate({discordId: member.id}, {jumpstart: true});
+                }
+                else
+                    await interaction.editReply({content: "You're already verified! No need to verify yourself again."});
+                return;
+            }
             if(await discordUsers.exists({email : decoded.email})){
-                await interaction.editReply("You have already verified yourself on our server! Please use the account that you initially verified yourself with!\nIf you're seeing this message and you have yet to verify yourself, please contact an admin!");
+                await interaction.editReply("You have already verified yourself on our server using a different account! Please use the account that you initially verified yourself with!\nIf you're seeing this message and you have yet to verify yourself, please contact an admin!");
                 return;
             }
             const fullName = `${decoded.firstName} ${decoded.lastName}`;
@@ -34,11 +47,19 @@ module.exports ={
                 discordId: member.id,
                 points: 0,
                 email: decoded.email,
-                name: fullName
-            })
+                name: fullName,
+                masseyhacks: masseyhacks,
+                jumpstart: jumpstart
+            });
             await member.setNickname(fullName);
             await member.roles.add(process.env.VERIFIED_ROLE_ID);
-            await interaction.editReply("Verification successful!")
+            if(decoded.category == "masseyhacks"){
+                await member.roles.add(process.env.MASSEYHACKS_PARTICIPANT);
+            }
+            else if(decoded.category == "jumpstart"){
+                await member.roles.add(process.env.JUMPSTART);
+            }
+            await interaction.editReply("Thanks for verifying yourself! Welcome to MasseyHacks VIII!")
         }
         catch(err){
             await interaction.editReply('There was an error trying to verify you. Please contact an admin.');

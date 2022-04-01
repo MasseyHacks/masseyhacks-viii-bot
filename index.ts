@@ -4,6 +4,7 @@ import fs from 'fs';
 import { Client, Collection, Intents, Permissions} from 'discord.js';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
+import { discordUsers } from './models/schema';
 
 declare module "discord.js"{
     export interface Client{
@@ -19,13 +20,13 @@ const commands =[];
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(f=>f.endsWith('.js'));
 
+const rest = new REST({version: '9'}).setToken(process.env.DISCORD_TOKEN);
+
 for (const f of commandFiles){
     const command = require(`./commands/${f}`);
     client.commands.set(command.data.name, command);
     commands.push(command.data.toJSON());
 }
-
-const rest = new REST({version: '9'}).setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
     try{
@@ -48,7 +49,14 @@ client.on('ready', () => {
 });
 
 client.on('guildMemberAdd', async member=>{
-    
+    if(!discordUsers.exists({discordId : member.id})){
+        try{
+            member.send("Welcome to MasseyHacks VIII! Please verify yourself ");
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
 });
 
 client.on('interactionCreate', async interaction=>{

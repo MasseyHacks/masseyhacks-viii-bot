@@ -36,6 +36,7 @@ const generateJWT = (firstName: String, lastName: String, email: String) => {
             firstName: firstName,
             lastName: lastName,
             email: email,
+            category: "jumpstart"
         },
         process.env.JWT_SECRET,
         {

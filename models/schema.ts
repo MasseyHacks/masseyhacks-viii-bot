@@ -12,6 +12,8 @@ interface userSchema extends mongoose.Document{
     discordId: string;
     email: string;
     points: number;
+    masseyhacks: boolean;
+    jumpstart: boolean;
 }
 
 const discordUsers = mongoose.model<userSchema>('DiscordUser', new mongoose.Schema<userSchema>({
@@ -29,6 +31,14 @@ const discordUsers = mongoose.model<userSchema>('DiscordUser', new mongoose.Sche
     },
     points: {
         type: Number,
+        require: true
+    },
+    masseyhacks :{
+        type: Boolean,
+        require: true
+    },
+    jumpstart:{
+        type: Boolean,
         require: true
     }
 }));
