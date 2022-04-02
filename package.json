@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev-build": "tsc --watch",
-    "dev-run" : "nodemon index",
-    "dev" : "npm-run-all -p dev-build dev-run"
+    "dev-run": "nodemon index",
+    "dev": "npm-run-all -p dev-build dev-run"
   },
   "repository": {
     "type": "git",
