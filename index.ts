@@ -16,7 +16,8 @@ const client = new Client({
     intents: [Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.DIRECT_MESSAGES, "GUILD_MEMBERS"]
 });
 
-const commands =[];
+const commands = [];
+const privateMessageCommands = [];
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(f=>f.endsWith('.js'));
 
@@ -25,6 +26,9 @@ const rest = new REST({version: '9'}).setToken(process.env.DISCORD_TOKEN);
 for (const f of commandFiles){
     const command = require(`./commands/${f}`);
     client.commands.set(command.data.name, command);
+    if(command.privateMessage){
+        privateMessageCommands.push(command.data.toJSON());
+    }
     commands.push(command.data.toJSON());
 }
 
@@ -32,7 +36,7 @@ for (const f of commandFiles){
     try{
         await rest.put(
             Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
-            { body: commands }
+            { body: privateMessageCommands }
         );
         await rest.put(
             Routes.applicationCommands(process.env.CLIENT_ID),

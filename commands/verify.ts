@@ -6,6 +6,7 @@ import { discordUsers } from '../models/schema';
 import TokenInterface from '../interfaces/tokenInterface';
 
 module.exports ={
+    privateMessage: true,
     data: new SlashCommandBuilder()
         .setName('verify')
         .setDescription("Verify yourself with your provided token!")
