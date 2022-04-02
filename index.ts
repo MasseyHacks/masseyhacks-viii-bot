@@ -53,12 +53,23 @@ client.on('ready', () => {
 });
 
 client.on('guildMemberAdd', async member=>{
-    if(!discordUsers.exists({discordId : member.id})){
+    const user = await discordUsers.findOne({discordId:member.id});
+    if(!user){
         try{
             member.send("Welcome to MasseyHacks VIII! Please verify yourself ");
         }
         catch(err){
             console.log(err);
+        }
+    }
+    else{
+        member.roles.add(process.env.VERIFIED_ROLE_ID);
+        member.setNickname(user.name);
+        if(user.jumpstart){
+            member.roles.add(process.env.JUMPSTART);
+        }
+        if(user.masseyhacks){
+            member.roles.add(process.env.MASSEYHACKS_PARTICIPANT);
         }
     }
 });
