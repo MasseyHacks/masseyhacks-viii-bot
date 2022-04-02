@@ -1,7 +1,7 @@
 require('dotenv').config();
 import fs from 'fs';
 
-import { Client, Collection, Intents, Permissions} from 'discord.js';
+import { ApplicationCommand, Client, Collection, Intents, Permissions} from 'discord.js';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import { discordUsers } from './models/schema';
@@ -18,6 +18,7 @@ const client = new Client({
 
 const commands = [];
 const privateMessageCommands = [];
+const adminOnlyCommands = [];
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(f=>f.endsWith('.js'));
 
@@ -32,17 +33,18 @@ for (const f of commandFiles){
     else{
         commands.push(command.data.toJSON());
     }
+    if(command.adminOnly) adminOnlyCommands.push(command.data.toJSON().name);
 }
 
 (async () => {
     try{
         await rest.put(
             Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
-            { body: privateMessageCommands }
+            { body: commands }
         );
         await rest.put(
             Routes.applicationCommands(process.env.CLIENT_ID),
-            { body: commands }
+            { body: privateMessageCommands }
         );
     }
     catch(err){
@@ -50,8 +52,24 @@ for (const f of commandFiles){
     }
 })();
 
-client.on('ready', () => {
+client.on('ready', async () => {
     console.log("Ready!");
+    const allCommands = {
+    };
+    (await client.guilds.cache.get(process.env.GUILD_ID)?.commands.fetch()).forEach(e => {
+        allCommands[e.name] = e ;
+    });
+    const permissions = [
+        {
+            id: process.env.ORGANIZER,
+            type: 'ROLE',
+            permission: true
+        }
+    ]
+    adminOnlyCommands.forEach(e => {
+        allCommands[e].setDefaultPermission(false);
+        allCommands[e].permissions.set({permissions});
+    });
 });
 
 client.on('guildMemberAdd', async member=>{

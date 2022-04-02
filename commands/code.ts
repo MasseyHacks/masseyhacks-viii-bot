@@ -38,7 +38,7 @@ module.exports ={
                     embed.title = "Expired Code!";
                     embed.description = "Unfortunately, you've entered an expired code. Please ensure you enter your code as soon as possible to avoid this from happening in the future.";
                 }
-                else if(code.maxUses == 0){
+                else if(code.maxUses <= 0){
                     embed.title = "Code no longer valid!";
                     embed.description = "Unfortunately, this code has already reached it's maximum uses! Ensure you enter your code as soon as possible!";
                 }
@@ -55,7 +55,7 @@ module.exports ={
                         await code.save();
                     }
                     embed.title = "Points added!";
-                    embed.description = `${code.points} have been added to your account! You currently now have ${user.points} point(s)!`;
+                    embed.description = `${code.points} have been added to your account from ${code.name}! You currently now have ${user.points} point(s)!`;
                     embed.color = "GREEN";
                 }
             }
