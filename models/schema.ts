@@ -1,5 +1,6 @@
 require('dotenv').config();
 import mongoose from'mongoose';
+import codeInterface from '../interfaces/codeInterface';
 
 mongoose.connect(process.env.DB_URL).then(() =>{
     console.log("Connected to MongoDB");
@@ -14,7 +15,15 @@ interface userSchema extends mongoose.Document{
     points: number;
     masseyhacks: boolean;
     jumpstart: boolean;
-    transactions: Array<any>;
+    transactions: Array<codeInterface>;
+}
+
+interface codeSchema extends mongoose.Document{
+    name: string;
+    id: string;
+    points: number;
+    expiry?: number;
+    maxUses?: number;
 }
 
 const discordUsers = mongoose.model<userSchema>('DiscordUser', new mongoose.Schema<userSchema>({
@@ -48,4 +57,27 @@ const discordUsers = mongoose.model<userSchema>('DiscordUser', new mongoose.Sche
     }
 }));
 
-export {discordUsers};
+const codes = mongoose.model<codeSchema>('Code', new mongoose.Schema<codeSchema>({
+    name: {
+        type: String,
+        require: true
+    },
+    id: {
+        type: String,
+        require: true
+    },
+    points: {
+        type: Number,
+        require: true
+    },
+    expiry :{
+        type : Number,
+        require: false
+    },
+    maxUses : {
+        type: Number, 
+        require: false
+    }
+}));
+
+export {discordUsers, codes};
