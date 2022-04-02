@@ -29,7 +29,9 @@ for (const f of commandFiles){
     if(command.privateMessage){
         privateMessageCommands.push(command.data.toJSON());
     }
-    commands.push(command.data.toJSON());
+    else{
+        commands.push(command.data.toJSON());
+    }
 }
 
 (async () => {
