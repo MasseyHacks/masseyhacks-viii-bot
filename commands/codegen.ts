@@ -9,7 +9,7 @@ module.exports ={
     adminOnly: true,
     data: new SlashCommandBuilder()
         .setName('codegen')
-        .setDescription("Enter a code to redeem your points!")
+        .setDescription("Internal Use Only")
         .addStringOption(option => option.setName('name').setDescription("Name for the code (i.e. the event/workshop name)").setRequired(true))
         .addNumberOption(option => option.setName('points').setDescription("Number of points awarded").setRequired(true))
         .addNumberOption(option => option.setName("expiry").setDescription("Expiry time of this code (in UNIX Timestamp UTC)").setRequired(false))

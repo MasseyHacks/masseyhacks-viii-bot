@@ -74,15 +74,7 @@ client.on('ready', async () => {
 
 client.on('guildMemberAdd', async member=>{
     const user = await discordUsers.findOne({discordId:member.id});
-    if(!user){
-        try{
-            member.send("Welcome to MasseyHacks VIII! Please verify yourself ");
-        }
-        catch(err){
-            console.log(err);
-        }
-    }
-    else{
+    if(user){
         member.roles.add(process.env.VERIFIED_ROLE_ID);
         member.setNickname(user.name);
         if(user.jumpstart){
