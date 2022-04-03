@@ -22,8 +22,19 @@ interface codeSchema extends mongoose.Document{
     name: string;
     id: string;
     points: number;
+    usedBy: Array<string>;
     expiry?: number;
     maxUses?: number;
+}
+
+interface shopSchema extends mongoose.Document{
+    name: string;
+    description: string;
+    points: number;
+    purchases: Array<string>;
+    expiry?: number;
+    maxPurchases?: number;
+    maxUserPurchases?: number;
 }
 
 const discordUsers = mongoose.model<userSchema>('DiscordUser', new mongoose.Schema<userSchema>({
@@ -77,7 +88,42 @@ const codes = mongoose.model<codeSchema>('Code', new mongoose.Schema<codeSchema>
     maxUses : {
         type: Number, 
         require: false
+    },
+    usedBy : {
+        type: [],
+        require: true
     }
 }));
 
-export {discordUsers, codes};
+const shops = mongoose.model<shopSchema>('Shop', new mongoose.Schema<shopSchema>({
+    name: {
+        type: String,
+        require: true
+    },
+    description:{
+        type: String,
+        require: true
+    },
+    points: {
+        type: Number,
+        require: true
+    },
+    purchases:{
+        type: [],
+        require: true
+    },
+    expiry:{
+        type: Number,
+        require: false
+    },
+    maxPurchases:{
+        type: Number,
+        require: false
+    },
+    maxUserPurchases:{
+        type: Number,
+        require: false
+    }
+}));
+
+export {discordUsers, codes, shops};
