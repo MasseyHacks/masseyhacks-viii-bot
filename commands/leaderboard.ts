@@ -10,7 +10,6 @@ module.exports ={
         .setDescription("List the leaderboard of the top 10 participants along with statistics!"),
     async execute(interaction: CommandInteraction){
         await interaction.deferReply({ ephemeral: interaction.inGuild() });
-        const userInfo = await discordUsers.findOne({discordId : interaction.user.id});
         let embed = {
             title: "Error!",
             description: "An error has occured with this command! Please try this command again or contact an admin!",
