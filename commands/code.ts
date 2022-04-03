@@ -52,8 +52,9 @@ module.exports ={
                     await user.save();
                     if(code.maxUses) {
                         code.maxUses--;
-                        await code.save();
                     }
+                    code.usedBy.push(interaction.user.id);
+                    await code.save();
                     embed.title = "Points added!";
                     embed.description = `${code.points} have been added to your account from ${code.name}! You currently now have ${user.points} point(s)!`;
                     embed.color = "GREEN";

@@ -90,7 +90,7 @@ module.exports ={
                     },
                     {
                         name: 'Expiry',
-                        value: interaction.options.getNumber("expiry") ? new Date(interaction.options.getNumber("expiry")).toString() : "No expiry",
+                        value: interaction.options.getNumber("expiry") ? new Date(interaction.options.getNumber("expiry") * 1000).toString() : "No expiry",
                         inline: true
                     },
                     {
