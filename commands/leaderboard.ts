@@ -47,7 +47,7 @@ module.exports ={
                 },
                 {
                     name: "Name",
-                    value: names.join("\nn"),
+                    value: names.join("\n"),
                     inline: true
                 },
                 {
