@@ -27,7 +27,7 @@ module.exports ={
             const currentTime = Math.floor(new Date().getTime() / 1000);
             const maxUsesIsInvalid = interaction.options.getNumber("maxuses") != null && (!Number.isInteger(interaction.options.getNumber("maxuses")) || interaction.options.getNumber("maxuses")) <= 0;
             const expiryIsInvalid = interaction.options.getNumber("expiry") != null && (!Number.isInteger(interaction.options.getNumber("expiry")) || interaction.options.getNumber("expiry") <= currentTime);
-            const pointsIsInvalid = !Number.isInteger(interaction.options.getNumber("points")) || interaction.options.getNumber("points") <= 0;
+            const pointsIsInvalid = !Number.isInteger(interaction.options.getNumber("points")) || interaction.options.getNumber("points") < 0;
             if(!member.roles.cache.has(process.env.ORGANIZER)){
                 embed.title = "Permission Denied!";
                 embed.description = "You don't have permission to access this command!";
@@ -39,7 +39,7 @@ module.exports ={
                 if(pointsIsInvalid){
                     embed.fields.push({
                         name: "Points",
-                        value: `You have entered ${interaction.options.getNumber("points")}, which is invalid. Acceptable values are integers greater than 0.`
+                        value: `You have entered ${interaction.options.getNumber("points")}, which is invalid. Acceptable values are integers greater than or equal to 0.`
                     })
                 }
                 if(maxUsesIsInvalid){
