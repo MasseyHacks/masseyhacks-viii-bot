@@ -13,7 +13,8 @@ declare module "discord.js"{
 }
 
 const client = new Client({
-    intents: [Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.DIRECT_MESSAGES, "GUILD_MEMBERS"]
+    intents: [Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.DIRECT_MESSAGES, "GUILD_MEMBERS", Intents.FLAGS.DIRECT_MESSAGES],
+    partials : ['CHANNEL', 'MESSAGE']
 });
 
 const commands = [];
