@@ -47,7 +47,7 @@ module.exports ={
                     },
                     {
                         name: "Expiry",
-                        value: (shopItems[pagination].expiry != null) ? new Date(shopItems[pagination].expiry).toString() : "No expiry"
+                        value: (shopItems[pagination].expiry != null) ? new Date(shopItems[pagination].expiry * 1000).toString() : "No expiry"
                     },
                     {
                         name: "Availability",
