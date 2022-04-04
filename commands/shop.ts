@@ -115,18 +115,20 @@ module.exports ={
                             await i.editReply({embeds: [embed], components: [messageActionRow]});
                         }
                         else if(i.customId == "purchase"){
+                            const recentUserInfo = await discordUsers.findOne({discordId : interaction.user.id});
                             const latestShopInfo = await shops.findOne({_id: shopItems[pagination]._id});
                             const isAvailableForUser = 
                                 (shopItems[pagination].maxPurchases == null || shopItems[pagination].maxPurchases - latestShopInfo.purchases.length > 0) &&
                                 (shopItems[pagination].maxUserPurchases == null || shopItems[pagination].maxUserPurchases - latestShopInfo.purchases.reduce((n, val) => n + Number(val == interaction.user.id), 0)) &&
-                                (shopItems[pagination].expiry == null || shopItems[pagination].expiry > Math.floor(new Date().getTime() / 1000));
+                                (shopItems[pagination].expiry == null || shopItems[pagination].expiry > Math.floor(new Date().getTime() / 1000)) &&
+                                (shopItems[pagination].points <= recentUserInfo.points);
                             if(isAvailableForUser){
                                 latestShopInfo.purchases.push(interaction.user.id);
                                 await latestShopInfo.save();
                                 userInfo.points -= latestShopInfo.points;
                                 userInfo.transactions.push({
                                     name: `Shop purchase: ${latestShopInfo.name}`,
-                                    points: latestShopInfo.points,
+                                    points: -latestShopInfo.points,
                                     id: "SHOP"
                                 });
                                 await userInfo.save();
@@ -142,7 +144,7 @@ module.exports ={
                             else{
                                 await i.editReply({embeds:[{
                                     title: "Purchase failed!",
-                                    description: "Your purchased failed! This either means you've reached the maximum number of purchases or this item is no longer available.",
+                                    description: "Your purchased failed! This either means you've reached the maximum number of purchases, you don't have the required funds, or this item is no longer available.",
                                     color: "RED"
                                 }], components: []});
                             }

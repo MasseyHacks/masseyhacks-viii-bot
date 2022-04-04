@@ -26,34 +26,45 @@ module.exports ={
             const median = (allMembers.length != 0) ? ((allMembers.length % 2 == 1) ? allMembers[(allMembers.length - 1)/2].points : (allMembers[allMembers.length/2 - 1].points + allMembers[allMembers.length / 2].points) / 2) : 0;
             
             let numOnLeaderboard = nonZeroMembers.length < 10 ? nonZeroMembers.length : 10;
-
-            const ranks = [], names = [], points = [];
-
-            for(let i = 0; i < numOnLeaderboard; i++){
-                ranks.push(`\`${i+1}\``);
-                names.push(nonZeroMembers[i].name);
-                points.push(nonZeroMembers[i].points);
-            }
-
-            embed.title = "Leaderboard!";
-            embed.description = `Top 10 Leaderboard (based off non-zero point values):`
-            embed.fields = [
-
-                {
-                    name: "Rank",
-                    value: ranks.join("\n"),
-                    inline: true
-                },
-                {
-                    name: "Name",
-                    value: names.join("\n"),
-                    inline: true
-                },
-                {
-                    name: "Statistics:",
-                    value: `Non-Zero Mean: ${nonZeroMean}\nMean: ${mean}\nNon-Zero Median: ${nonZeroMedian}\nMedian: ${median}`
+            if(numOnLeaderboard != 0){
+                const ranks = [], names = [], points = [];
+    
+                for(let i = 0; i < numOnLeaderboard; i++){
+                    ranks.push(`\`${i+1}\``);
+                    names.push(nonZeroMembers[i].name);
+                    points.push(nonZeroMembers[i].points);
                 }
-            ];
+    
+                embed.title = "Leaderboard!";
+                embed.description = `Top 10 Leaderboard (based off non-zero point values):`
+                embed.fields = [
+    
+                    {
+                        name: "Rank",
+                        value: ranks.join("\n"),
+                        inline: true
+                    },
+                    {
+                        name: "Name",
+                        value: names.join("\n"),
+                        inline: true
+                    },
+                    {
+                        name: "Statistics:",
+                        value: `Non-Zero Mean: ${nonZeroMean}\nMean: ${mean}\nNon-Zero Median: ${nonZeroMedian}\nMedian: ${median}`
+                    }
+                ];
+            }
+            else{
+                embed.title = "Leaderboard!";
+                embed.description = `Top 10 Leaderboard (based off non-zero point values):\nNo-one! Go earn some points!`
+                embed.fields = [
+                    {
+                        name: "Statistics:",
+                        value: `Non-Zero Mean: ${nonZeroMean}\nMean: ${mean}\nNon-Zero Median: ${nonZeroMedian}\nMedian: ${median}`
+                    }
+                ];
+            }
             embed.color = "AQUA";
         }
         catch(err){}
