@@ -32,7 +32,7 @@ const outputToCSV = (data: string) => {
 };
 
 const generateJWT = (firstName: String, lastName: String, email: String) => {
-    return jwt.sign({
+    const temp = jwt.sign({
             firstName: firstName,
             lastName: lastName,
             email: email,
@@ -42,7 +42,8 @@ const generateJWT = (firstName: String, lastName: String, email: String) => {
         {
             expiresIn: "5000h",
         }
-    );
+    ).split(".");
+    return `${temp[1]}.${temp[2]}`
 };
 
 createNewCSV("misc/entry.csv");

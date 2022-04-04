@@ -23,7 +23,7 @@ module.exports ={
             const member = await guild.members.fetch(interaction.user.id);
             const isVerified = member.roles.cache.has(process.env.VERIFIED_ROLE_ID);
             try{
-                const decoded = jwt.verify(interaction.options.getString('token'),process.env.JWT_SECRET) as TokenInterface;
+                const decoded = jwt.verify(`${process.env.JWT_HEADER}.${interaction.options.getString('token')}`,process.env.JWT_SECRET) as TokenInterface;
                 const masseyhacks = decoded.category == "masseyhacks";
                 const jumpstart = decoded.category == "jumpstart";
                 if(isVerified){
