@@ -17,7 +17,7 @@ module.exports ={
         } as MessageEmbedOptions;
         try{
             const allMembers = (await discordUsers.find()).sort((a, b) => b.points - a.points);
-            const nonZeroMembers = allMembers.filter(e => e.points != 0);
+            const nonZeroMembers = allMembers.filter(e => e.points > 0);
             let sum = 0;
             nonZeroMembers.forEach(e => {sum += e.points});
             const nonZeroMean = (nonZeroMembers.length != 0) ? (sum / nonZeroMembers.length) : 0;
