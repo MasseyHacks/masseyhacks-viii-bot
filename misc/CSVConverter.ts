@@ -43,7 +43,7 @@ const generateJWT = (firstName: String, lastName: String, email: String) => {
             expiresIn: "5000h",
         }
     ).split(".");
-    return `${temp[1]}.${temp[2]}`
+    return `${temp[1]},${temp[2]}`
 };
 
 createNewCSV("misc/entry.csv");
