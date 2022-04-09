@@ -50,8 +50,7 @@ module.exports ={
                 }
                 else if(await discordUsers.exists({email : decoded.email})){
                     embed.title = "Verification Failed!";
-                    embed.description = "You have already verified yourself on our server using a different account! Please use the account that you initially verified yourself with!\nIf you're seeing this message and you have yet to verify yourself, please contact an admin!";
-                    console.log(embed);
+                    embed.description = "You have already verified yourself on our server using a different account! Please use the account that you initially verified yourself with! If you're seeing this message and you have yet to verify yourself, please contact an admin!";
                 }
                 else{
                     const fullName = `${decoded.firstName} ${decoded.lastName}`;
@@ -85,7 +84,6 @@ module.exports ={
             embed.title = "Verification Failed!";
             embed.description = "Hmmm... Can't seem to find your Discord account in our Discord server. Please make sure you've joined the MasseyHacks VIII Discord Server, and try again.\nIf you have joined the server and this message is showing up, please contact an Organizer.";
         };
-        console.log(embed);
         await interaction.editReply({embeds : [embed]});
     }
 }
