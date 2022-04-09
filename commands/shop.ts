@@ -126,7 +126,7 @@ module.exports ={
                                 latestShopInfo.purchases.push(interaction.user.id);
                                 await latestShopInfo.save();
                                 userInfo.points -= latestShopInfo.points;
-                                userInfo.transactions.push({
+                                userInfo.transactions.unshift({
                                     name: `Shop purchase: ${latestShopInfo.name}`,
                                     points: -latestShopInfo.points,
                                     id: "SHOP"
