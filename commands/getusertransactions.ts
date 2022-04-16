@@ -140,6 +140,7 @@ module.exports ={
                                         ],
                                         components: []
                                     });
+                                }
                             }
                             catch(err){
                                 await i.editReply({embeds:[{
