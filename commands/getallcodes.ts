@@ -68,7 +68,8 @@ module.exports ={
                     const forwardButton = new MessageButton().setCustomId('forward').setLabel('Forward').setStyle('SECONDARY').setEmoji("▶️").setDisabled(length == pagination + 1);
                     const exportButton = new MessageButton().setCustomId('export').setLabel('Export Uses').setStyle('PRIMARY');
                     const disableButton = new MessageButton().setCustomId('disable').setLabel('Disable').setStyle('DANGER');
-                    const messageActionRow = new MessageActionRow().addComponents([backwardButton, forwardButton, exportButton, disableButton]);
+                    const deleteButton = new MessageButton().setCustomId('delete').setLabel('Delete').setStyle('DANGER');
+                    const messageActionRow = new MessageActionRow().addComponents([backwardButton, forwardButton, exportButton, disableButton, deleteButton]);
                     await interaction.editReply({components: [messageActionRow]});
     
                     const collector = (await interaction.fetchReply() as Message).createMessageComponentCollector({idle: 60000, dispose: true});
@@ -166,6 +167,46 @@ module.exports ={
                                         {
                                             title: "Action Cancelled",
                                             description: `Alright, ${codeItems[pagination].name} has not been disabled!`, 
+                                            color: "GREEN"
+                                        }
+                                    ],
+                                    components: []
+                                });
+                            }
+                            else if(i.customId == "delete"){
+                                const cancelButton = new MessageButton().setCustomId('cancelDelete').setLabel('Cancel').setStyle('PRIMARY');
+                                const confirmButton = new MessageButton().setCustomId('confirmDelete').setLabel('Confirm').setStyle('DANGER');
+                                const deleteActionRow = new MessageActionRow().addComponents([cancelButton, confirmButton]);
+                                await i.editReply({
+                                    embeds : [
+                                        {
+                                            title: "Confirm Delete",
+                                            description: `Are you sure you want to delete ${codeItems[pagination].name}? Note that this action is **irreversible**.`,
+                                            color: "RED"
+                                        }
+                                    ],
+                                    components:[deleteActionRow]
+                                });
+                            }
+                            else if(i.customId == "confirmDelete"){
+                                await codes.findOneAndDelete({_id: codeItems[pagination]._id});
+                                await i.editReply({
+                                    embeds: [
+                                        {
+                                            title: "Code Deleted",
+                                            description: `Alright, ${codeItems[pagination].name} has been deleted!`, 
+                                            color: "GREEN"
+                                        }
+                                    ],
+                                    components: []
+                                });
+                            }
+                            else if(i.customId == "cancelDelete"){
+                                await i.editReply({
+                                    embeds: [
+                                        {
+                                            title: "Action Cancelled",
+                                            description: `Alright, ${codeItems[pagination].name} has not been deleted!`, 
                                             color: "GREEN"
                                         }
                                     ],
