@@ -60,7 +60,8 @@ module.exports ={
     
                         const backwardButton = new MessageButton().setCustomId('backward').setLabel('Back').setStyle('SECONDARY').setEmoji("◀️").setDisabled(pagination == 0);
                         const forwardButton = new MessageButton().setCustomId('forward').setLabel('Forward').setStyle('SECONDARY').setEmoji("▶️").setDisabled(length == pagination + 1);
-                        const messageActionRow = new MessageActionRow().addComponents([backwardButton, forwardButton]);
+                        const deleteButton = new MessageButton().setCustomId('delete').setLabel('Delete').setStyle('DANGER');
+                        const messageActionRow = new MessageActionRow().addComponents([backwardButton, forwardButton, deleteButton]);
                         await interaction.editReply({components: [messageActionRow]});
                         
                         const collector = (await interaction.fetchReply() as Message).createMessageComponentCollector({idle: 60000, dispose: true});
@@ -97,6 +98,48 @@ module.exports ={
                                     };
                                     await i.editReply({embeds: [embed], components: [messageActionRow]});
                                 }
+                                else if(i.customId == "delete"){
+                                    const cancelButton = new MessageButton().setCustomId('cancelDelete').setLabel('Cancel').setStyle('PRIMARY');
+                                    const confirmButton = new MessageButton().setCustomId('confirmDelete').setLabel('Confirm').setStyle('DANGER');
+                                    const deleteActionRow = new MessageActionRow().addComponents([cancelButton, confirmButton]);
+                                    await i.editReply({
+                                        embeds : [
+                                            {
+                                                title: "Confirm Delete",
+                                                description: `Are you sure you want to delete ${user.transactions[pagination].name} (${user.transactions[pagination].points} points)? Note that this action is **irreversible**.`,
+                                                color: "RED"
+                                            }
+                                        ],
+                                        components:[deleteActionRow]
+                                    });
+                                }
+                                else if(i.customId == "confirmDelete"){
+                                    const pointsRemove = -user.transactions[pagination].points;
+                                    const name = user.transactions[pagination].name;
+                                    user.transactions.splice(pagination, 1);
+                                    await discordUsers.findOneAndUpdate({discordId : interaction.options.getString('discordid')}, {transactions: user.transactions, $inc:{points: pointsRemove}});
+                                    await i.editReply({
+                                        embeds: [
+                                            {
+                                                title: "Transaction Deleted",
+                                                description: `Alright, ${name} has been deleted from user!`, 
+                                                color: "GREEN"
+                                            }
+                                        ],
+                                        components: []
+                                    });
+                                }
+                                else if(i.customId == "cancelDelete"){
+                                    await i.editReply({
+                                        embeds: [
+                                            {
+                                                title: "Action Cancelled",
+                                                description: `Alright, ${user.transactions[pagination].name} has not been deleted from user!`, 
+                                                color: "GREEN"
+                                            }
+                                        ],
+                                        components: []
+                                    });
                             }
                             catch(err){
                                 await i.editReply({embeds:[{
