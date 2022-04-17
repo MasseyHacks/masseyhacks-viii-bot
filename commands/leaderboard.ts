@@ -30,7 +30,7 @@ module.exports ={
                 const ranks = [], names = [], points = [];
     
                 for(let i = 0; i < numOnLeaderboard; i++){
-                    ranks.push(`\`${i+1}\``);
+                    ranks.push(`${i+1}`);
                     names.push(nonZeroMembers[i].name);
                     points.push(nonZeroMembers[i].points);
                 }
