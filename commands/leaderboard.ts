@@ -4,7 +4,8 @@ import { CommandInteraction, MessageEmbedOptions } from "discord.js";
 import { discordUsers } from '../models/schema';
 
 module.exports ={
-    privateMessage: true,
+    privateMessage: false,
+    adminOnly: true,
     data: new SlashCommandBuilder()
         .setName('leaderboard')
         .setDescription("List the leaderboard of the top 10 participants along with statistics!"),
