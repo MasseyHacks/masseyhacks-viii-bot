@@ -52,6 +52,11 @@ module.exports ={
                         inline: true
                     },
                     {
+                        name: "Points",
+                        value: points.join("\n"),
+                        inline: true
+                    },
+                    {
                         name: "IDs",
                         value: ids.join("\n"),
                         inline: true
