@@ -58,6 +58,10 @@ module.exports ={
                         {
                             name: "Max Uses",
                             value : (code.maxUses != null) ? `${code.maxUses}` : "Unlimited"
+                        },
+                        {
+                            name: "Anti Codes",
+                            value: (code.antiCodes != null) ? code.antiCodes.join() : "None"
                         }
                     ];
 
@@ -83,7 +87,7 @@ module.exports ={
                                         color: "GREEN"
                                     }
                                 ],
-                                files: [new MessageAttachment(Buffer.from("discordId,name,numPurchases\r\n" + purchases, "utf-8"), 'uses.csv')]
+                                files: [new MessageAttachment(Buffer.from("discordId,name\r\n" + purchases, "utf-8"), 'uses.csv')]
                                 });
                             }
                             else if(i.customId == "disable"){
