@@ -25,12 +25,7 @@ module.exports ={
                 embed.description = "You don't have permission to access this command!";
             }
             else{
-                const user = await discordUsers.findOne({discordId : interaction.options.getString('discordid')});
-                if(!user){
-                    embed.title = "User Not Found!"
-                    embed.description = "This Discord ID is invalid! Please enter a valid Discord ID!"
-                }
-                else if(interaction.options.getNumber('points') < 0 || !Number.isInteger(interaction.options.getNumber("points"))){
+                if(interaction.options.getNumber('points') < 0 || !Number.isInteger(interaction.options.getNumber("points"))){
                     embed.title = "Invalid entry!";
                     embed.description = `You have entered ${interaction.options.getNumber('points')} for points, which is invalid. Numbers must be greater than or equal to 0 and an integer.`
                 }
