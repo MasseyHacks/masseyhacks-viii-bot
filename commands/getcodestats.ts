@@ -58,10 +58,6 @@ module.exports ={
                         {
                             name: "Max Uses",
                             value : (code.maxUses != null) ? `${code.maxUses}` : "Unlimited"
-                        },
-                        {
-                            name: "Anti Codes",
-                            value: (code.antiCodes != null) ? code.antiCodes.join() : "None"
                         }
                     ];
 
